@@ -53,7 +53,7 @@ const mobile = sh("node", [
 ]);
 const gcp = sh("node", ["scripts/verify-gcp-docker-build-config.mjs"]);
 const nodeModules = fs.existsSync(path.join(ROOT, "node_modules"));
-const pnpm = sh("pnpm", ["-v"]);
+sh("pnpm", ["-v"]);
 
 const appJson = readJson("artifacts/banco-mobile/app.json");
 const mobilePkg = readJson("artifacts/banco-mobile/package.json");

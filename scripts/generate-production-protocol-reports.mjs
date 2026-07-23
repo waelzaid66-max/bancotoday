@@ -182,7 +182,7 @@ w(
 
 | Step | Result | Evidence |
 |------|--------|----------|
-| \`node_modules\` present | **NO** (count 0) | \`ls node_modules \| wc -l\` → 0 |
+| \`node_modules\` present | **NO** (count 0) | \`ls node_modules \\| wc -l\` → 0 |
 | \`pnpm -v\` / corepack fetch | **FAIL** | \`ECONNRESET\` fetching \`registry.npmjs.org/pnpm/-/pnpm-11.9.0.tgz\` |
 | Mirror retry (jsdelivr) | **FAIL** | Connection reset |
 | Blind dependency upgrade | **NOT DONE** (forbidden) | Protocol |
