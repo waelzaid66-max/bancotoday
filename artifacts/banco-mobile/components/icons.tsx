@@ -313,6 +313,7 @@ const ICONS: Record<string, LucideIcon> = {
   "settings": Settings,
   "shield": Shield,
   "shield-check": ShieldCheck,
+  "shield-check-outline": ShieldCheck,
   "sliders": SlidersHorizontal,
   "sparkles": Sparkles,
   "square-outline": Square,

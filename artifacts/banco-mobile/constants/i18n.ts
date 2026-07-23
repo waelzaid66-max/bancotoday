@@ -820,6 +820,7 @@ const en = {
     deleteAuthPrompt: "Confirm your identity to delete your account",
     continueWithGoogle: "Continue with Google",
     continueWithApple: "Continue with Apple",
+    continueWithFacebook: "Continue with Facebook",
     orDivider: "or",
     secureNotice:
       "Bank-grade security. We never post on your behalf or share your data.",
@@ -2834,6 +2835,7 @@ const ar: typeof en = {
     deleteAuthPrompt: "أكّد هويتك لحذف الحساب",
     continueWithGoogle: "المتابعة عبر Google",
     continueWithApple: "المتابعة عبر Apple",
+    continueWithFacebook: "المتابعة عبر Facebook",
     orDivider: "أو",
     secureNotice: "حماية بمستوى البنوك. عمرنا مننشر باسمك ولا نشارك بياناتك.",
     fraudNotice:
