@@ -2660,3 +2660,49 @@ export const bookings = pgTable(
 
 export type Booking = typeof bookings.$inferSelect;
 export type InsertBooking = typeof bookings.$inferInsert;
+
+// ── Car import orders ────────────────────────────────────────────────────────
+// A real, sequential import-order lifecycle for the Cars section (additive layer;
+// the existing Discover import filter + static guide stay untouched). Stages
+// mirror the visual guide: order → review → confirm → shipping → customs →
+// delivered, plus a terminal `cancelled`. Consumer creates the order; staff/admin
+// advance the stage. Kept isolated to the car section — no other surface changes.
+export const importOrderStageEnum = pgEnum("import_order_stage", [
+  "order",
+  "review",
+  "confirm",
+  "shipping",
+  "customs",
+  "delivered",
+  "cancelled",
+]);
+
+export const importOrders = pgTable(
+  "import_orders",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    // The consumer who requested the import.
+    userId: uuid("user_id")
+      .references(() => users.id, { onDelete: "cascade" })
+      .notNull(),
+    // Requested vehicle (free-text so any make/model/market works — publish-first).
+    brand: text("brand").notNull(),
+    model: text("model"),
+    year: integer("year"),
+    // Optional budget ceiling + origin market for the import.
+    budgetMax: numeric("budget_max", { precision: 14, scale: 2 }),
+    originCountry: text("origin_country"),
+    note: text("note"),
+    // Current lifecycle stage (drives the tracking UI progress).
+    stage: importOrderStageEnum("stage").notNull().default("order"),
+    createdAt: timestamp("created_at").defaultNow(),
+    updatedAt: timestamp("updated_at").defaultNow(),
+  },
+  (table) => [
+    index("idx_import_orders_user").on(table.userId),
+    index("idx_import_orders_stage").on(table.stage),
+  ]
+);
+
+export type ImportOrder = typeof importOrders.$inferSelect;
+export type InsertImportOrder = typeof importOrders.$inferInsert;
