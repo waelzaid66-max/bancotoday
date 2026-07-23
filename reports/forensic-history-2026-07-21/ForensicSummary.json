@@ -1,0 +1,62 @@
+{
+  "investigationDate": "2026-07-21",
+  "mode": "READ_ONLY_NO_IMPORT_NO_IMPLEMENTATION",
+  "workingClone": {
+    "repo": "waelzaid66-max/-BANCO-CA-OOM-",
+    "sha": "c1cce1b"
+  },
+  "ownerDirective": "Treat bancoo as production baseline for investigation",
+  "bancooBaselineFinding": {
+    "tip": "321af022a0b6a38a7fe0a0480353f45be2c5499b",
+    "commitsOnMain": 1,
+    "tags": 0,
+    "claimedSourceSha": "93f2c7e",
+    "claimedSourceFoundInAnyRepo": false,
+    "mergeBaseWithCaOom": null,
+    "interpretation": "History-stripped commit-tree handoff snapshot (see github-push-auth-stale.md), not a git lineage"
+  },
+  "repositories": {
+    "bancoo": { "tip": "321af02", "commits": 1, "tags": 0, "uniqueFilesVsCa": 6 },
+    "CA-OOM": { "tip": "c1cce1b", "commits": 555, "tags": 13, "uniqueFilesVsBancoo": 72 },
+    "B-OOM": { "tip": "6fce7a3", "uniqueCommitsVsCaHead": 0 },
+    "b.deals": { "tip": "8f7a63a", "uniqueCommitsVsCaHead": 0 },
+    "aws-virgen": { "tip": "d386f52", "uniqueCommitsVsCaHead": 17, "note": "mostly AWS sync/EB packaging" },
+    "bancooom": { "empty": true }
+  },
+  "identicalBetweenBancooAndCa": [
+    ".env.example",
+    "lib/api-spec/openapi.yaml",
+    "lib/db/src/schema/index.ts"
+  ],
+  "priorityGapsOnBancooVsCa": [
+    "profile /me.role authoritative",
+    "profile demote guard",
+    "banks awaiting-link UI",
+    "updateListing MEDIA_VERIFY -> 503",
+    "marketCountryMapCenter + LB/MA/TN/SD",
+    "map locate_error",
+    "cover rationale + android keyboard resize",
+    "deployPin gitSha on readyz",
+    "chain-integrity-gate.mjs"
+  ],
+  "bancooOnlyArtifacts": [
+    ".agents/memory/banco-ai-env-fix.md",
+    ".agents/memory/banco-email-completeness.md",
+    ".agents/memory/banco-mobile-perf.md",
+    ".agents/memory/banco-web-export-deploy.md",
+    ".agents/memory/github-push-auth-stale.md",
+    "release/banco_dev_dump_2026-07-21.sql.gz"
+  ],
+  "authFacebookLoginPresentInBancooOrCa": false,
+  "facebookSocialLinkIconPresentBoth": true,
+  "mapsLiveEngineBoth": "Leaflet/OSM WebView",
+  "productionAccepted": false,
+  "importAuthorized": false,
+  "recommendedHistoryUnion": [
+    "CA-OOM git timeline + tags",
+    "bancoo sealed tree as 2026-07-21 handoff artifact",
+    "aws-virgen deploy-unique commits",
+    "B-OOM/b.deals contained ancestors",
+    "bancoo memory cards + quarantined dump"
+  ]
+}

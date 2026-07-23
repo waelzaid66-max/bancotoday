@@ -1,0 +1,122 @@
+{
+  "generatedAt": "2026-07-21T23:41:13.659Z",
+  "repository": "waelzaid66-max/-BANCO-CA-OOM-",
+  "branch": "main",
+  "commit": "e4c8118337c79ce5591f99c638cd8608a8717bc8",
+  "productionAccepted": false,
+  "counts": {
+    "PASS": 6,
+    "FAIL": 1,
+    "BLOCKED": 14,
+    "SKIP": 0
+  },
+  "results": [
+    {
+      "id": "identity.repo",
+      "status": "PASS",
+      "detail": "waelzaid66-max/-BANCO-CA-OOM-"
+    },
+    {
+      "id": "identity.branch",
+      "status": "PASS",
+      "detail": "main"
+    },
+    {
+      "id": "identity.sha",
+      "status": "PASS",
+      "detail": "e4c8118337c79ce5591f99c638cd8608a8717bc8"
+    },
+    {
+      "id": "source.chain_integrity",
+      "status": "PASS",
+      "detail": " | --- 58/58 passed --- | Chain integrity OK."
+    },
+    {
+      "id": "deploy.gcp_docker_config",
+      "status": "PASS",
+      "detail": " | GCP Docker/Cloud Build config OK. Use build context = repository root (.)."
+    },
+    {
+      "id": "mobile.node_static_suites",
+      "status": "PASS",
+      "detail": "# pass 75"
+    },
+    {
+      "id": "deps.pnpm_install_frozen",
+      "status": "BLOCKED",
+      "detail": "node_modules missing — re-run with --with-install on laptop/CI"
+    },
+    {
+      "id": "validate.typecheck",
+      "status": "BLOCKED",
+      "detail": "requires node_modules"
+    },
+    {
+      "id": "validate.eslint_scripts",
+      "status": "BLOCKED",
+      "detail": "requires node_modules"
+    },
+    {
+      "id": "validate.mobile_full_test",
+      "status": "BLOCKED",
+      "detail": "requires node_modules"
+    },
+    {
+      "id": "validate.api_unit",
+      "status": "BLOCKED",
+      "detail": "requires node_modules"
+    },
+    {
+      "id": "validate.admin_typecheck",
+      "status": "BLOCKED",
+      "detail": "requires node_modules"
+    },
+    {
+      "id": "validate.dealer_typecheck",
+      "status": "BLOCKED",
+      "detail": "requires node_modules"
+    },
+    {
+      "id": "validate.web_typecheck",
+      "status": "BLOCKED",
+      "detail": "requires node_modules"
+    },
+    {
+      "id": "validate.landing_typecheck",
+      "status": "BLOCKED",
+      "detail": "requires node_modules"
+    },
+    {
+      "id": "build.api",
+      "status": "BLOCKED",
+      "detail": "requires node_modules"
+    },
+    {
+      "id": "build.admin",
+      "status": "BLOCKED",
+      "detail": "requires node_modules"
+    },
+    {
+      "id": "build.dealer",
+      "status": "BLOCKED",
+      "detail": "requires node_modules"
+    },
+    {
+      "id": "production.readyz",
+      "status": "BLOCKED",
+      "detail": "pass --prod-url https://HOST"
+    },
+    {
+      "id": "production.readyz_sha_matches_head",
+      "status": "BLOCKED",
+      "detail": "pass --prod-url https://HOST"
+    },
+    {
+      "id": "deploy.bancooom_has_main",
+      "status": "FAIL",
+      "detail": "empty or unreachable — sync required from CA-OOM"
+    }
+  ],
+  "productionCandidate": false,
+  "note": "Not a production candidate — see FAIL/BLOCKED rows."
+}

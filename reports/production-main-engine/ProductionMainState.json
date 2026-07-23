@@ -1,0 +1,26 @@
+{
+  "mission": "Transform bancoo into definitive Production MAIN without feature loss",
+  "generatedAt": "2026-07-21T22:45:00.000Z",
+  "sourceWorkingRepo": "waelzaid66-max/-BANCO-CA-OOM-",
+  "targetMainRepo": "waelzaid66-max/bancoo",
+  "orphanBancooTip": "321af022a0b6a38a7fe0a0480353f45be2c5499b",
+  "cloudAgentCanPushBancoo": false,
+  "correctStrategy": "SYNC_VERIFIED_CA_TIP_INTO_BANCOO_PRESERVE_SEALED_UNIQUES",
+  "forbiddenStrategy": "RESET_CA_TO_ORPHAN_BANCOO_TIP",
+  "syncScript": "scripts/publish-bancoo-production-main.sh",
+  "preserveOnSync": [
+    "release/banco_dev_dump_2026-07-21.sql.gz",
+    ".agents/memory/banco-ai-env-fix.md",
+    ".agents/memory/banco-email-completeness.md",
+    ".agents/memory/banco-mobile-perf.md",
+    ".agents/memory/banco-web-export-deploy.md",
+    ".agents/memory/github-push-auth-stale.md"
+  ],
+  "productionAccepted": false,
+  "blockers": [
+    "BANCOO_PRODUCTION_SYNC_TOKEN + CONFIRM_BANCOO_FORCE=YES on laptop",
+    "pnpm install / typecheck / lint / build",
+    "live /api/readyz F1",
+    "device QA N2"
+  ]
+}

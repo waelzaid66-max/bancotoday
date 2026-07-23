@@ -1,0 +1,41 @@
+{
+  "protocol": "v1.0",
+  "repository": "waelzaid66-max/-BANCO-CA-OOM-",
+  "branch": "main",
+  "commit": "5c6e8139ee3a49e54f27823ef6c9e456ced417e6",
+  "date": "2026-07-21",
+  "productionAccepted": false,
+  "status": {
+    "chainGate": "PASS",
+    "mobileNodeTests": "PASS",
+    "gcpDocker": "PASS",
+    "pnpmInstall": "BLOCKED — pnpm/corepack cannot fetch registry (ECONNRESET to registry.npmjs.org)",
+    "typecheck": "BLOCKED — requires pnpm install / node_modules",
+    "eslint": "BLOCKED — requires pnpm install / node_modules",
+    "apiUnitVitest": "BLOCKED — requires pnpm install / node_modules + DB for readyz path",
+    "adminBuild": "BLOCKED — requires pnpm install",
+    "dealerBuild": "BLOCKED — requires pnpm install",
+    "webBuild": "BLOCKED — requires pnpm install",
+    "landingBuild": "BLOCKED — requires pnpm install",
+    "dockerBuild": "NOT RUN — network + long build; config verified only",
+    "liveProductionReadyz": "PENDING — owner F1 (paste live /api/readyz)",
+    "ownerPrimaryRepo": "PENDING — owner F0 (CA-OOM vs bancoo vs bancooom)"
+  },
+  "gateTail": [
+    "[PASS] P-fi-inbox-forbidden-unlinked",
+    "[PASS] P-section-route-discover",
+    "",
+    "--- 36/36 passed ---",
+    "Chain integrity OK."
+  ],
+  "mobileTail": [
+    "# tests 75",
+    "# suites 0",
+    "# pass 75",
+    "# fail 0",
+    "# cancelled 0",
+    "# skipped 0",
+    "# todo 0",
+    "# duration_ms 89.217861"
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "protocol": "Continuous Production Recovery",
+  "generatedAt": "2026-07-21T23:41:13.662Z",
+  "repository": "waelzaid66-max/-BANCO-CA-OOM-",
+  "branch": "main",
+  "commit": "e4c8118337c79ce5591f99c638cd8608a8717bc8",
+  "describe": "v1.4.0-stable-2026-07-18-221-ge4c8118",
+  "productionAccepted": false,
+  "iteration": "R-MEDIA-IDENTITY-SECURITY-GATES",
+  "criticalAreas": {
+    "authentication_clerk_email_google_apple": "PASS",
+    "authentication_facebook_login": "N/A — tenant forbids invent; see audit/production-gates/FACEBOOK-LOGIN-AND-FI-AUTOCREATE-SECURITY-2026-07-21-AR.md",
+    "profile_me_role_demote_skip_menu": "PASS",
+    "profile_cover_rationale": "PASS",
+    "media_upload_create_update_503": "PASS",
+    "maps_leaflet_centers_locate": "PASS",
+    "search_section_route": "PASS",
+    "marketplace_stay_cars_never_touch_markers": "PASS",
+    "banks_fi_awaiting_link": "PASS",
+    "push_listingId_deeplink": "PASS",
+    "email_message_match_price_drop": "PASS",
+    "deploy_pin_readyz_source": "PASS",
+    "chain_integrity_gate": "PASS",
+    "replit_web_export_clerk_load_gate": "PASS — restored this iteration (C-WEB-BASE)",
+    "pnpm_install_typecheck_lint_build": "BLOCKED — npm registry ECONNRESET / no node_modules",
+    "live_readyz_f1": "BLOCKED — needs --prod-url / owner paste",
+    "bancooom_gcp_mirror": "FAIL — remote empty; sync required (ops)",
+    "aws_eb_unique_packaging": "BLOCKED — knowledge on aws-virgen; not imported"
+  },
+  "validations": {
+    "chainGate": "PASS",
+    "mobileNodeTests": "PASS",
+    "laptopMatrixSeed": "FAIL_OR_HAS_BLOCKED",
+    "nodeModulesPresent": false
+  },
+  "lastRepair": {
+    "id": "REP-MEDIA-IDENTITY-GATES-2026-07-21",
+    "summary": "Dealer edit media, feed-safe video posters, poster claim assert, Expo BANCO/com.bancooom.app; FB+FI gates documented not invented",
+    "files": [
+      "artifacts/dealer-os/src/components/listing-form-sheet.tsx",
+      "artifacts/api-server/src/services/SearchService.ts",
+      "artifacts/api-server/src/services/ListingService.ts",
+      "artifacts/banco-mobile/app/listings/create.tsx",
+      "artifacts/banco-mobile/components/listings/ListingMediaEditor.tsx",
+      "artifacts/banco-mobile/components/MediaGallery.tsx",
+      "artifacts/banco-mobile/app.json",
+      "audit/production-gates/"
+    ]
+  }
+}

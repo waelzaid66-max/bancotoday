@@ -1,0 +1,138 @@
+{
+  "protocol": "BANCO STORE — Production Execution & Validation Standard",
+  "generatedAt": "2026-07-21T22:21:18.923Z",
+  "generatedBy": "Cursor agent (validation standard)",
+  "productionAccepted": false,
+  "repository": {
+    "fullName": "waelzaid66-max/-BANCO-CA-OOM-",
+    "branch": "main",
+    "commitSha": "7c74602fbbc0e7ecaa65f945ebbefb1e29de73aa",
+    "commitShort": "7c74602",
+    "describe": "v1.4.0-stable-2026-07-18-206-g7c74602",
+    "latestTag": "v1.4.0-stable-2026-07-18",
+    "releaseCandidateTag": "v1.4.0-stable-2026-07-18",
+    "commitsSinceWipe93b650b": 238
+  },
+  "versions": {
+    "workspace": "0.0.0",
+    "apiServer": "0.0.0",
+    "mobilePackage": "0.0.0",
+    "mobileAppExpoVersion": "1.0.0",
+    "mobileIosBuildNumber": "1",
+    "mobileAndroidVersionCode": 1,
+    "mobileExpoSdk": "~54.0.36",
+    "adminOs": "0.0.0",
+    "dealerOs": "0.0.0",
+    "bancoWeb": "0.0.0",
+    "landing": "0.0.0",
+    "sharedApiClientReact": "0.0.0",
+    "sharedApiZod": "0.0.0",
+    "sharedDb": "0.0.0",
+    "openapiDocumentVersion": "1.0.0",
+    "openapiSpec": "3.1.0",
+    "dbSchemaFileCount": 1,
+    "dbSchemaFiles": [
+      "index.ts"
+    ]
+  },
+  "deployment": {
+    "buildNumber": null,
+    "deploymentVersion": null,
+    "liveGitSha": null,
+    "liveBuildId": null,
+    "note": "Live deploy pin UNKNOWN — F1 BLOCKED (egress/DNS). After deploy, read /api/readyz.gitSha",
+    "gitShaBakeSupportedInDocker": true,
+    "gcpDeployRepoIntended": "waelzaid66-max/bancooom",
+    "gcpDeployRepoActualState": "EMPTY"
+  },
+  "maps": {
+    "liveImplementation": "Leaflet/OSM WebView",
+    "googleMapsPackagesPresentButNotLivePath": true
+  },
+  "siblingRepositories": {
+    "CA-OOM": {
+      "fullName": "waelzaid66-max/-BANCO-CA-OOM-",
+      "tip": "7c74602fbbc0e7ecaa65f945ebbefb1e29de73aa",
+      "pushedAt": "2026-07-21T22:11:14Z",
+      "sizeKbApprox": 36525,
+      "chainIntegrityGate": true,
+      "role": "ENGINEERING_SOURCE_OF_TRUTH"
+    },
+    "bancooom": {
+      "fullName": "waelzaid66-max/bancooom",
+      "tip": null,
+      "pushedAt": "2026-07-09T13:17:54Z",
+      "sizeKbApprox": 0,
+      "empty": true,
+      "chainIntegrityGate": false,
+      "role": "GCP_DEPLOY_MIRROR_INTENDED_BUT_EMPTY",
+      "evidence": "GitHub size=0; shallow clone warns empty repository; no main commits"
+    },
+    "bancoo": {
+      "fullName": "waelzaid66-max/bancoo",
+      "tip": "321af022a0b6a38a7fe0a0480353f45be2c5499b",
+      "pushedAt": "2026-07-21T14:53:30Z",
+      "sizeKbApprox": 11836,
+      "empty": false,
+      "chainIntegrityGate": false,
+      "role": "ORPHAN_HANDOFF_DUMP_KNOWLEDGE_ONLY",
+      "evidence": "Commit message claims source 93f2c7e; missing scripts/chain-integrity-gate.mjs; whole-tree merge would regress CA-OOM repairs"
+    },
+    "aws-virgen": {
+      "fullName": "waelzaid66-max/aws-virgen",
+      "tip": "d386f527e58f22defa5ebc6b1b14ac79220cc373",
+      "pushedAt": "2026-07-10T15:55:09Z",
+      "role": "AWS_MIRROR_STALE",
+      "evidence": "Last tip Jul 10 sync manifest — behind CA-OOM HEAD"
+    }
+  },
+  "liveReadyzProbes": [
+    {
+      "url": "https://banco-ca-oom.replit.app/api/readyz",
+      "result": "BLOCKED",
+      "detail": "TLS Recv failure: Connection reset by peer"
+    },
+    {
+      "url": "https://banco.store/api/readyz",
+      "result": "BLOCKED",
+      "detail": "TLS Recv failure: Connection reset by peer"
+    },
+    {
+      "url": "https://www.banco.store/api/readyz",
+      "result": "BLOCKED",
+      "detail": "TLS Recv failure: Connection reset by peer"
+    },
+    {
+      "url": "https://api.banco.store/api/readyz",
+      "result": "BLOCKED",
+      "detail": "Could not resolve host"
+    }
+  ],
+  "validationSummary": {
+    "chainGate": "PASS",
+    "mobileNodeTests": "PASS",
+    "gcpDockerConfig": "PASS",
+    "pnpmInstall": "BLOCKED",
+    "typecheck": "BLOCKED",
+    "eslint": "BLOCKED",
+    "fullBuild": "BLOCKED",
+    "apiVitest": "BLOCKED",
+    "adminBuild": "BLOCKED",
+    "dealerBuild": "BLOCKED",
+    "webBuild": "BLOCKED",
+    "liveReadyz": "BLOCKED",
+    "productionAccepted": false
+  },
+  "f0Recommendation": {
+    "engineeringPrimary": "A_CA_OOM",
+    "gcpDeployMirror": "C_bancooom_AFTER_SYNC_FROM_CA_OOM",
+    "doNotUseAsPrimary": [
+      "B_bancoo"
+    ],
+    "rationale": "CA-OOM is the only non-empty continuous line with chain-integrity-gate and Jul-21 repairs. bancooom is the documented GCP trigger repo but is currently EMPTY and must be synced FROM CA-OOM. bancoo is an orphan handoff dump missing the integrity gate."
+  },
+  "f1Recommendation": {
+    "status": "BLOCKED_UNTIL_LIVE_PROBE",
+    "requiredAction": "Owner/ops: sync CA-OOM→bancooom, deploy API with GIT_SHA bake, paste GET /api/readyz JSON. Expect gitSha == CA-OOM tip used for that deploy."
+  }
+}
