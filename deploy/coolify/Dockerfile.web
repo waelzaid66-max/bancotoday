@@ -1,0 +1,84 @@
+# syntax=docker/dockerfile:1.7
+###############################################################################
+# BANCO web surfaces — Vite SPAs + Nginx (Coolify on Hostinger VPS)
+#
+# Builds three Vite SPAs; dealer-os and admin-os are built TWICE so both live
+# and Coolify path aliases work without breaking DomainRouter / bookmarks:
+#   landing    →  /
+#   dealer-os  →  /dealer-os/  (LIVE on banco.today) AND /market/ (Coolify alias)
+#   admin-os   →  /admin-os/   (LIVE on banco.today) AND /admin/  (Coolify alias)
+#
+# Nginx also reverse-proxies /api/, /l/, /sitemap.xml, /robots.txt → api:8080.
+#
+# KEY: BASE_PATH is set per-app at build time so Vite bakes the correct asset
+# base into the HTML. Dual builds are intentional — do not collapse to one path.
+#
+# Build context = repository root.
+###############################################################################
+
+FROM node:24-bookworm-slim AS builder
+ENV PNPM_HOME=/pnpm
+ENV PATH=$PNPM_HOME:$PATH
+RUN corepack enable
+WORKDIR /app
+
+ARG VITE_CLERK_PUBLISHABLE_KEY=""
+ARG VITE_CLERK_PROXY_URL=""
+ARG VITE_API_BASE_URL=""
+ARG VITE_MARKET_URL=""
+ARG VITE_ADMIN_URL=""
+ARG VITE_APP_ANDROID_URL=""
+ARG VITE_APP_IOS_URL=""
+
+ENV VITE_CLERK_PUBLISHABLE_KEY=$VITE_CLERK_PUBLISHABLE_KEY \
+    VITE_CLERK_PROXY_URL=$VITE_CLERK_PROXY_URL \
+    VITE_API_BASE_URL=$VITE_API_BASE_URL \
+    VITE_MARKET_URL=$VITE_MARKET_URL \
+    VITE_ADMIN_URL=$VITE_ADMIN_URL \
+    VITE_APP_ANDROID_URL=$VITE_APP_ANDROID_URL \
+    VITE_APP_IOS_URL=$VITE_APP_IOS_URL
+
+COPY . .
+
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
+    pnpm install --frozen-lockfile \
+      --filter "@workspace/admin-os..." \
+      --filter "@workspace/dealer-os..." \
+      --filter "@workspace/landing..."
+
+# Staging dir so successive BASE_PATH builds do not overwrite each other.
+RUN mkdir -p /spa-out/landing /spa-out/market /spa-out/dealer-os /spa-out/admin /spa-out/admin-os
+
+RUN pnpm --filter @workspace/landing run build \
+ && cp -a /app/artifacts/landing/dist/public/. /spa-out/landing/
+
+# dealer-os: Coolify alias first, then LIVE path (last write to package dist is fine;
+# we copy out after each build).
+RUN BASE_PATH=/market/ pnpm --filter @workspace/dealer-os run build \
+ && cp -a /app/artifacts/dealer-os/dist/public/. /spa-out/market/
+
+RUN BASE_PATH=/dealer-os/ pnpm --filter @workspace/dealer-os run build \
+ && cp -a /app/artifacts/dealer-os/dist/public/. /spa-out/dealer-os/
+
+RUN BASE_PATH=/admin/ pnpm --filter @workspace/admin-os run build \
+ && cp -a /app/artifacts/admin-os/dist/public/. /spa-out/admin/
+
+RUN BASE_PATH=/admin-os/ pnpm --filter @workspace/admin-os run build \
+ && cp -a /app/artifacts/admin-os/dist/public/. /spa-out/admin-os/
+
+FROM nginx:1.27-alpine AS runner
+RUN rm -rf /usr/share/nginx/html/*
+
+# Vite outDir is `dist/public` — copy staged trees into nginx roots.
+COPY --from=builder /spa-out/landing/    /usr/share/nginx/html/
+COPY --from=builder /spa-out/market/     /usr/share/nginx/html/market/
+COPY --from=builder /spa-out/dealer-os/  /usr/share/nginx/html/dealer-os/
+COPY --from=builder /spa-out/admin/      /usr/share/nginx/html/admin/
+COPY --from=builder /spa-out/admin-os/   /usr/share/nginx/html/admin-os/
+
+COPY deploy/coolify/nginx.conf /etc/nginx/conf.d/default.conf
+
+EXPOSE 80
+
+HEALTHCHECK --interval=30s --timeout=5s --retries=3 \
+  CMD wget -qO- http://127.0.0.1/nginx-health || exit 1
