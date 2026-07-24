@@ -28,7 +28,6 @@ import React, {
   useState,
 } from "react";
 import {
-  LayoutChangeEvent,
   Modal,
   NativeScrollEvent,
   NativeSyntheticEvent,
@@ -187,13 +186,14 @@ function Rail({ title, items, onCardPress, onSave, isSaved }: RailProps) {
 // small header gap between the BANCO wordmark and the action cluster — it never
 // touches, resizes, recolors, or competes with the BANCO logo.
 //
-// Behaviour (one calm pass every 30s, like a branded car driving through):
-//   • 0s → 26s   : fully hidden (opacity 0), no movement.
-//   • 26.0s      : fade in over 250ms only.
-//   • 26.25s →   : glide ONCE across the gap at a constant, calm speed (~3.75s).
-//   • ~28.5s     : begin fading out WHILE still moving, gone before the far edge.
-//   • then       : back to opacity 0 until the next 30s cycle.
-// Only translateX + opacity animate (GPU thread, no layout, no scale/zoom/rotate).
+// Behaviour (a calm branded "heartbeat" pulse, repeating every ~2.6s):
+//   • appears (opacity 0→1), gently grows (scale →1.10 max), shrinks back, and
+//     fades out (opacity →0), then repeats. More present/motivating than the old
+//     30s single glide, but subtle — never exaggerated.
+// Only scale + opacity animate (GPU thread, no layout). Max scale 1.10 on the
+// 16px mark ≈ +1.6px (~0.25mm), well under the owner's 1mm cap; `overflow:hidden`
+// on `styles.spark` clips it inside the header gap so it can never touch, resize,
+// or compete with the BANCO logo or the adjacent search/assistant cluster.
 // Uses the official B-OOM asset as-is (only its flat black backdrop was made
 // transparent so it sits cleanly on both the dark and light header). Respects
 // prefers-reduced-motion by showing the mark static instead of animating.
@@ -209,44 +209,42 @@ const BOOM_W = Math.round(BOOM_H * BOOM_ASPECT);
 function HeaderSpark() {
   const reduceMotion = useReducedMotion();
   const t = useSharedValue(0);
-  const boxW = useSharedValue(0);
 
   useEffect(() => {
     if (reduceMotion) return;
+    // Calm branded heartbeat: appear → gently grow → shrink → disappear, on a
+    // repeating ~2.6s pulse. Scale + opacity ONLY (GPU thread, no layout). The
+    // `overflow:hidden` on `styles.spark` clips the mark inside the header gap,
+    // so the pulse can never touch/resize the BANCO logo or the action cluster.
     t.value = withRepeat(
-      withTiming(1, { duration: 30000, easing: Easing.linear }),
+      withTiming(1, { duration: 2600, easing: Easing.inOut(Easing.ease) }),
       -1,
       false
     );
   }, [t, reduceMotion]);
 
   const logoStyle = useAnimatedStyle(() => {
-    // Keep the whole mark inside the gap at both extremes (overflow:hidden also
-    // guards it). span = half the free horizontal room.
-    const span = Math.max(0, (boxW.value - BOOM_W) / 2);
     return {
       opacity: interpolate(
         t.value,
-        [0.8667, 0.875, 0.95, 0.98, 1],
-        [0, 1, 1, 0, 0],
+        [0, 0.15, 0.5, 0.85, 1],
+        [0, 0.9, 1, 0.9, 0],
         Extrapolation.CLAMP
       ),
       transform: [
         {
-          translateX: interpolate(
+          // Max scale 1.10 on the 16px mark ≈ +1.6px (~0.25mm) — a clear pulse
+          // well under the owner's 1mm cap; never exaggerated.
+          scale: interpolate(
             t.value,
-            [0.875, 1],
-            [-span, span],
+            [0, 0.15, 0.5, 0.85, 1],
+            [0.98, 1, 1.1, 1, 0.98],
             Extrapolation.CLAMP
           ),
         },
       ],
     };
   });
-
-  const onLayout = (e: LayoutChangeEvent) => {
-    boxW.value = e.nativeEvent.layout.width;
-  };
 
   if (reduceMotion) {
     return (
@@ -261,7 +259,7 @@ function HeaderSpark() {
   }
 
   return (
-    <View style={styles.spark} pointerEvents="none" onLayout={onLayout}>
+    <View style={styles.spark} pointerEvents="none">
       <Animated.View style={logoStyle}>
         <Image
           source={BOOM_LOGO}
