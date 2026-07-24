@@ -1123,6 +1123,81 @@ components:
             Additive. The seller's newest visible listing — anchors the
             profile "Message" button (conversations are listing-anchored).
 
+    ImportOrderStage:
+      type: string
+      enum: [order, review, confirm, shipping, customs, delivered, cancelled]
+      description: Car-import order lifecycle stage.
+    CreateImportOrderBody:
+      type: object
+      required: [brand]
+      properties:
+        brand:
+          type: string
+        model:
+          type: string
+          nullable: true
+        year:
+          type: integer
+          nullable: true
+        budget_max:
+          type: number
+          nullable: true
+        origin_country:
+          type: string
+          nullable: true
+        note:
+          type: string
+          nullable: true
+    ImportOrder:
+      type: object
+      required: [id, brand, stage]
+      properties:
+        id:
+          type: string
+        brand:
+          type: string
+        model:
+          type: string
+          nullable: true
+        year:
+          type: integer
+          nullable: true
+        budget_max:
+          type: number
+          nullable: true
+        origin_country:
+          type: string
+          nullable: true
+        note:
+          type: string
+          nullable: true
+        stage:
+          $ref: "#/components/schemas/ImportOrderStage"
+        created_at:
+          type: string
+          nullable: true
+        updated_at:
+          type: string
+          nullable: true
+    ImportOrderListItem:
+      type: object
+      required: [id, brand, stage]
+      properties:
+        id:
+          type: string
+        brand:
+          type: string
+        model:
+          type: string
+          nullable: true
+        year:
+          type: integer
+          nullable: true
+        stage:
+          $ref: "#/components/schemas/ImportOrderStage"
+        created_at:
+          type: string
+          nullable: true
     Rfq:
       type: object
       description: RFQ summary (list item + base of the detail) (Task #33).
@@ -8792,6 +8867,87 @@ paths:
                   meta:
                     $ref: "#/components/schemas/Meta"
 
+  /v1/import-orders:
+    post:
+      operationId: createImportOrder
+      summary: Create a car-import order
+      description: Consumer requests importing a specific car; starts at stage "order".
+      tags: [import-orders]
+      security:
+        - ClerkAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateImportOrderBody"
+      responses:
+        "201":
+          description: Created import order
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/ImportOrder"
+                  error:
+                    $ref: "#/components/schemas/ApiError"
+                    nullable: true
+                  meta:
+                    $ref: "#/components/schemas/Meta"
+  /v1/import-orders/mine:
+    get:
+      operationId: listMyImportOrders
+      summary: My car-import orders (newest first)
+      tags: [import-orders]
+      security:
+        - ClerkAuth: []
+      responses:
+        "200":
+          description: My import orders
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/ImportOrderListItem"
+                  error:
+                    $ref: "#/components/schemas/ApiError"
+                    nullable: true
+                  meta:
+                    $ref: "#/components/schemas/Meta"
+  /v1/import-orders/{id}:
+    get:
+      operationId: getImportOrder
+      summary: Import order detail (owner only)
+      tags: [import-orders]
+      security:
+        - ClerkAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Import order
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/ImportOrder"
+                  error:
+                    $ref: "#/components/schemas/ApiError"
+                    nullable: true
+                  meta:
+                    $ref: "#/components/schemas/Meta"
   /v1/rfqs:
     get:
       operationId: listRfqs

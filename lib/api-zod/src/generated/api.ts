@@ -2919,8 +2919,8 @@ export const GetAdminUsersResponse = zod.object({
   "trade_name": zod.string().nullish(),
   "owner_name": zod.string().nullish(),
   "city": zod.string().nullish(),
-  "documents": zod.array(zod.string()).optional().describe('Uploaded verification document / ID photo URLs.')
-}).nullish().describe('Business / FI onboarding payload used for KYC review (activity, names, city, document URLs). Null when the user never submitted business verification.')
+  "documents": zod.array(zod.string()).optional().describe('Uploaded verification document \/ ID photo URLs.')
+}).nullish().describe('Business \/ FI onboarding payload used for KYC review (activity, names, city, document URLs). Null when the user never submitted business verification.\n')
 })).optional(),
   "error": zod.object({
   "code": zod.enum(['INVALID_DATA', 'NOT_FOUND', 'UNAUTHORIZED', 'INTERNAL_ERROR', 'FORBIDDEN', 'RATE_LIMITED', 'INVALID_TOKEN', 'CONFLICT']),
@@ -2967,8 +2967,8 @@ export const SetUserBanResponse = zod.object({
   "trade_name": zod.string().nullish(),
   "owner_name": zod.string().nullish(),
   "city": zod.string().nullish(),
-  "documents": zod.array(zod.string()).optional().describe('Uploaded verification document / ID photo URLs.')
-}).nullish().describe('Business / FI onboarding payload used for KYC review (activity, names, city, document URLs). Null when the user never submitted business verification.')
+  "documents": zod.array(zod.string()).optional().describe('Uploaded verification document \/ ID photo URLs.')
+}).nullish().describe('Business \/ FI onboarding payload used for KYC review (activity, names, city, document URLs). Null when the user never submitted business verification.\n')
 }).optional(),
   "error": zod.object({
   "code": zod.enum(['INVALID_DATA', 'NOT_FOUND', 'UNAUTHORIZED', 'INTERNAL_ERROR', 'FORBIDDEN', 'RATE_LIMITED', 'INVALID_TOKEN', 'CONFLICT']),
@@ -3010,8 +3010,8 @@ export const SetUserRoleResponse = zod.object({
   "trade_name": zod.string().nullish(),
   "owner_name": zod.string().nullish(),
   "city": zod.string().nullish(),
-  "documents": zod.array(zod.string()).optional().describe('Uploaded verification document / ID photo URLs.')
-}).nullish().describe('Business / FI onboarding payload used for KYC review (activity, names, city, document URLs). Null when the user never submitted business verification.')
+  "documents": zod.array(zod.string()).optional().describe('Uploaded verification document \/ ID photo URLs.')
+}).nullish().describe('Business \/ FI onboarding payload used for KYC review (activity, names, city, document URLs). Null when the user never submitted business verification.\n')
 }).optional(),
   "error": zod.object({
   "code": zod.enum(['INVALID_DATA', 'NOT_FOUND', 'UNAUTHORIZED', 'INTERNAL_ERROR', 'FORBIDDEN', 'RATE_LIMITED', 'INVALID_TOKEN', 'CONFLICT']),
@@ -3053,8 +3053,8 @@ export const SetUserVerifiedResponse = zod.object({
   "trade_name": zod.string().nullish(),
   "owner_name": zod.string().nullish(),
   "city": zod.string().nullish(),
-  "documents": zod.array(zod.string()).optional().describe('Uploaded verification document / ID photo URLs.')
-}).nullish().describe('Business / FI onboarding payload used for KYC review (activity, names, city, document URLs). Null when the user never submitted business verification.')
+  "documents": zod.array(zod.string()).optional().describe('Uploaded verification document \/ ID photo URLs.')
+}).nullish().describe('Business \/ FI onboarding payload used for KYC review (activity, names, city, document URLs). Null when the user never submitted business verification.\n')
 }).optional(),
   "error": zod.object({
   "code": zod.enum(['INVALID_DATA', 'NOT_FOUND', 'UNAUTHORIZED', 'INTERNAL_ERROR', 'FORBIDDEN', 'RATE_LIMITED', 'INVALID_TOKEN', 'CONFLICT']),
@@ -4715,6 +4715,100 @@ export const UpdateMyCompanyBody = zod.object({
 export const UpdateMyCompanyResponse = zod.object({
   "data": zod.object({
   "updated": zod.boolean()
+}).optional(),
+  "error": zod.object({
+  "code": zod.enum(['INVALID_DATA', 'NOT_FOUND', 'UNAUTHORIZED', 'INTERNAL_ERROR', 'FORBIDDEN', 'RATE_LIMITED', 'INVALID_TOKEN', 'CONFLICT']),
+  "message": zod.string()
+}).nullish(),
+  "meta": zod.object({
+  "cursor": zod.string().optional(),
+  "has_next": zod.boolean().optional(),
+  "total": zod.number().optional()
+}).optional()
+})
+
+
+/**
+ * Consumer requests importing a specific car; starts at stage "order".
+ * @summary Create a car-import order
+ */
+export const CreateImportOrderBody = zod.object({
+  "brand": zod.string(),
+  "model": zod.string().nullish(),
+  "year": zod.number().nullish(),
+  "budget_max": zod.number().nullish(),
+  "origin_country": zod.string().nullish(),
+  "note": zod.string().nullish()
+})
+
+export const CreateImportOrderResponse = zod.object({
+  "data": zod.object({
+  "id": zod.string(),
+  "brand": zod.string(),
+  "model": zod.string().nullish(),
+  "year": zod.number().nullish(),
+  "budget_max": zod.number().nullish(),
+  "origin_country": zod.string().nullish(),
+  "note": zod.string().nullish(),
+  "stage": zod.enum(['order', 'review', 'confirm', 'shipping', 'customs', 'delivered', 'cancelled']).describe('Car-import order lifecycle stage.'),
+  "created_at": zod.string().nullish(),
+  "updated_at": zod.string().nullish()
+}).optional(),
+  "error": zod.object({
+  "code": zod.enum(['INVALID_DATA', 'NOT_FOUND', 'UNAUTHORIZED', 'INTERNAL_ERROR', 'FORBIDDEN', 'RATE_LIMITED', 'INVALID_TOKEN', 'CONFLICT']),
+  "message": zod.string()
+}).nullish(),
+  "meta": zod.object({
+  "cursor": zod.string().optional(),
+  "has_next": zod.boolean().optional(),
+  "total": zod.number().optional()
+}).optional()
+})
+
+
+/**
+ * @summary My car-import orders (newest first)
+ */
+export const ListMyImportOrdersResponse = zod.object({
+  "data": zod.array(zod.object({
+  "id": zod.string(),
+  "brand": zod.string(),
+  "model": zod.string().nullish(),
+  "year": zod.number().nullish(),
+  "stage": zod.enum(['order', 'review', 'confirm', 'shipping', 'customs', 'delivered', 'cancelled']).describe('Car-import order lifecycle stage.'),
+  "created_at": zod.string().nullish()
+})).optional(),
+  "error": zod.object({
+  "code": zod.enum(['INVALID_DATA', 'NOT_FOUND', 'UNAUTHORIZED', 'INTERNAL_ERROR', 'FORBIDDEN', 'RATE_LIMITED', 'INVALID_TOKEN', 'CONFLICT']),
+  "message": zod.string()
+}).nullish(),
+  "meta": zod.object({
+  "cursor": zod.string().optional(),
+  "has_next": zod.boolean().optional(),
+  "total": zod.number().optional()
+}).optional()
+})
+
+
+/**
+ * @summary Import order detail (owner only)
+ */
+export const GetImportOrderParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const GetImportOrderResponse = zod.object({
+  "data": zod.object({
+  "id": zod.string(),
+  "brand": zod.string(),
+  "model": zod.string().nullish(),
+  "year": zod.number().nullish(),
+  "budget_max": zod.number().nullish(),
+  "origin_country": zod.string().nullish(),
+  "note": zod.string().nullish(),
+  "stage": zod.enum(['order', 'review', 'confirm', 'shipping', 'customs', 'delivered', 'cancelled']).describe('Car-import order lifecycle stage.'),
+  "created_at": zod.string().nullish(),
+  "updated_at": zod.string().nullish()
 }).optional(),
   "error": zod.object({
   "code": zod.enum(['INVALID_DATA', 'NOT_FOUND', 'UNAUTHORIZED', 'INTERNAL_ERROR', 'FORBIDDEN', 'RATE_LIMITED', 'INVALID_TOKEN', 'CONFLICT']),

@@ -835,6 +835,53 @@ export interface CompanyProfile {
   latest_listing_id?: string | null;
 }
 
+/**
+ * Car-import order lifecycle stage.
+ */
+export type ImportOrderStage = typeof ImportOrderStage[keyof typeof ImportOrderStage];
+
+
+export const ImportOrderStage = {
+  order: 'order',
+  review: 'review',
+  confirm: 'confirm',
+  shipping: 'shipping',
+  customs: 'customs',
+  delivered: 'delivered',
+  cancelled: 'cancelled',
+} as const;
+
+export interface CreateImportOrderBody {
+  brand: string;
+  model?: string | null;
+  year?: number | null;
+  budget_max?: number | null;
+  origin_country?: string | null;
+  note?: string | null;
+}
+
+export interface ImportOrder {
+  id: string;
+  brand: string;
+  model?: string | null;
+  year?: number | null;
+  budget_max?: number | null;
+  origin_country?: string | null;
+  note?: string | null;
+  stage: ImportOrderStage;
+  created_at?: string | null;
+  updated_at?: string | null;
+}
+
+export interface ImportOrderListItem {
+  id: string;
+  brand: string;
+  model?: string | null;
+  year?: number | null;
+  stage: ImportOrderStage;
+  created_at?: string | null;
+}
+
 export type RfqCategory = typeof RfqCategory[keyof typeof RfqCategory];
 
 
@@ -1044,8 +1091,7 @@ export const AdminUserStaffRole = {
 } as const;
 
 /**
- * Business / FI onboarding payload used for KYC review.
- * Null when the user never submitted business verification.
+ * Business / FI onboarding payload used for KYC review (activity, names, city, document URLs). Null when the user never submitted business verification.
  */
 export type AdminUserCompanyDetails = {
   activity_type?: string | null;
@@ -1055,7 +1101,7 @@ export type AdminUserCompanyDetails = {
   city?: string | null;
   /** Uploaded verification document / ID photo URLs. */
   documents?: string[];
-};
+} | null;
 
 export interface AdminUser {
   id?: string;
@@ -1073,12 +1119,8 @@ export interface AdminUser {
   wallet_balance?: string;
   listing_count?: number;
   created_at?: string;
-  /**
-   * Business / FI onboarding payload used for KYC review (activity,
-   * names, city, document URLs). Null when the user never submitted
-   * business verification.
-   */
-  company_details?: AdminUserCompanyDetails | null;
+  /** Business / FI onboarding payload used for KYC review (activity, names, city, document URLs). Null when the user never submitted business verification. */
+  company_details?: AdminUserCompanyDetails;
 }
 
 export type AdminListingStatus = typeof AdminListingStatus[keyof typeof AdminListingStatus];
@@ -4788,6 +4830,24 @@ export type UpdateMyCompany200Data = {
 
 export type UpdateMyCompany200 = {
   data?: UpdateMyCompany200Data;
+  error?: ApiError | null;
+  meta?: Meta;
+};
+
+export type CreateImportOrder201 = {
+  data?: ImportOrder;
+  error?: ApiError | null;
+  meta?: Meta;
+};
+
+export type ListMyImportOrders200 = {
+  data?: ImportOrderListItem[];
+  error?: ApiError | null;
+  meta?: Meta;
+};
+
+export type GetImportOrder200 = {
+  data?: ImportOrder;
   error?: ApiError | null;
   meta?: Meta;
 };

@@ -50,6 +50,8 @@ import type {
   CreateFinancingSeatBody,
   CreateGlobalSupply201,
   CreateGlobalSupplyBody,
+  CreateImportOrder201,
+  CreateImportOrderBody,
   CreateInvestment201,
   CreateInvestmentBody,
   CreateListing201,
@@ -121,6 +123,7 @@ import type {
   GetFinancingSeats200,
   GetFraudSignals200,
   GetGlobalSupply200,
+  GetImportOrder200,
   GetInstitutionInbox200,
   GetInstitutionInboxParams,
   GetInvestment200,
@@ -178,6 +181,7 @@ import type {
   ListMyFollowingParams,
   ListMyGlobalSupply200,
   ListMyGlobalSupplyParams,
+  ListMyImportOrders200,
   ListMyInvestments200,
   ListMyInvestmentsParams,
   ListMyRfqs200,
@@ -10603,6 +10607,231 @@ export const useUpdateMyCompany = <TError = ErrorType<unknown>,
       > => {
       return useMutation(getUpdateMyCompanyMutationOptions(options));
     }
+
+export const getCreateImportOrderUrl = () => {
+
+
+
+
+  return `/api/v1/import-orders`
+}
+
+/**
+ * Consumer requests importing a specific car; starts at stage "order".
+ * @summary Create a car-import order
+ */
+export const createImportOrder = async (createImportOrderBody: CreateImportOrderBody, options?: RequestInit): Promise<CreateImportOrder201> => {
+
+  return customFetch<CreateImportOrder201>(getCreateImportOrderUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(createImportOrderBody)
+  }
+);}
+
+
+
+
+export const getCreateImportOrderMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createImportOrder>>, TError,{data: BodyType<CreateImportOrderBody>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof createImportOrder>>, TError,{data: BodyType<CreateImportOrderBody>}, TContext> => {
+
+const mutationKey = ['createImportOrder'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createImportOrder>>, {data: BodyType<CreateImportOrderBody>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  createImportOrder(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateImportOrderMutationResult = NonNullable<Awaited<ReturnType<typeof createImportOrder>>>
+    export type CreateImportOrderMutationBody = BodyType<CreateImportOrderBody>
+    export type CreateImportOrderMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Create a car-import order
+ */
+export const useCreateImportOrder = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createImportOrder>>, TError,{data: BodyType<CreateImportOrderBody>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof createImportOrder>>,
+        TError,
+        {data: BodyType<CreateImportOrderBody>},
+        TContext
+      > => {
+      return useMutation(getCreateImportOrderMutationOptions(options));
+    }
+
+export const getListMyImportOrdersUrl = () => {
+
+
+
+
+  return `/api/v1/import-orders/mine`
+}
+
+/**
+ * @summary My car-import orders (newest first)
+ */
+export const listMyImportOrders = async ( options?: RequestInit): Promise<ListMyImportOrders200> => {
+
+  return customFetch<ListMyImportOrders200>(getListMyImportOrdersUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListMyImportOrdersQueryKey = () => {
+    return [
+    `/api/v1/import-orders/mine`
+    ] as const;
+    }
+
+
+export const getListMyImportOrdersQueryOptions = <TData = Awaited<ReturnType<typeof listMyImportOrders>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listMyImportOrders>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListMyImportOrdersQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listMyImportOrders>>> = ({ signal }) => listMyImportOrders({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listMyImportOrders>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ListMyImportOrdersQueryResult = NonNullable<Awaited<ReturnType<typeof listMyImportOrders>>>
+export type ListMyImportOrdersQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary My car-import orders (newest first)
+ */
+
+export function useListMyImportOrders<TData = Awaited<ReturnType<typeof listMyImportOrders>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listMyImportOrders>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getListMyImportOrdersQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetImportOrderUrl = (id: string,) => {
+
+
+
+
+  return `/api/v1/import-orders/${id}`
+}
+
+/**
+ * @summary Import order detail (owner only)
+ */
+export const getImportOrder = async (id: string, options?: RequestInit): Promise<GetImportOrder200> => {
+
+  return customFetch<GetImportOrder200>(getGetImportOrderUrl(id),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetImportOrderQueryKey = (id: string,) => {
+    return [
+    `/api/v1/import-orders/${id}`
+    ] as const;
+    }
+
+
+export const getGetImportOrderQueryOptions = <TData = Awaited<ReturnType<typeof getImportOrder>>, TError = ErrorType<unknown>>(id: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getImportOrder>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetImportOrderQueryKey(id);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getImportOrder>>> = ({ signal }) => getImportOrder(id, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: id !== null && id !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getImportOrder>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetImportOrderQueryResult = NonNullable<Awaited<ReturnType<typeof getImportOrder>>>
+export type GetImportOrderQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Import order detail (owner only)
+ */
+
+export function useGetImportOrder<TData = Awaited<ReturnType<typeof getImportOrder>>, TError = ErrorType<unknown>>(
+ id: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getImportOrder>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetImportOrderQueryOptions(id,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
 
 export const getListRfqsUrl = (params?: ListRfqsParams,) => {
   const normalizedParams = new URLSearchParams();
